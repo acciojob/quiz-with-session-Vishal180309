@@ -1,8 +1,7 @@
 // Get elements
-const questions = document.querySelectorAll('.question');
-const options = document.querySelectorAll('.option');
-const submitButton = document.querySelector('#submit');
-const scoreDisplay = document.querySelector('#score');
+const questionsContainer = document.getElementById('questions');
+const submitButton = document.getElementById('submit');
+const scoreDisplay = document.getElementById('score');
 
 // Questions data
 const questionsData = [
@@ -33,51 +32,50 @@ const questionsData = [
   }
 ];
 
-// Initialize progress and score
-let progress = JSON.parse(sessionStorage.getItem('progress')) || {};
-let score = 0;
+// Get saved progress from session storage
+const savedProgress = JSON.parse(sessionStorage.getItem('progress')) || {};
 
 // Display questions and options
 questionsData.forEach((question, index) => {
-  const questionElement = questions[index];
-  questionElement.textContent = question.question;
+  const questionElement = document.createElement('div');
+  questionElement.innerHTML = `
+    <h2>${question.question}</h2>
+    <ul>
+      ${question.options.map((option, optionIndex) => `
+        <li>
+          <input type="radio" id="question${index}Option${optionIndex}" name="question${index}" value="${optionIndex}" ${savedProgress[index] === optionIndex ? 'checked' : ''}>
+          <label for="question${index}Option${optionIndex}">${option}</label>
+        </li>
+      `).join('')}
+    </ul>
+  `;
+  questionsContainer.appendChild(questionElement);
+});
 
-  question.options.forEach((option, optionIndex) => {
-    const optionElement = options[index * 4 + optionIndex];
-    optionElement.textContent = option;
-
-    // Check if option is selected
-    if (progress[index] === optionIndex) {
-      optionElement.classList.add('selected');
-    }
-
-    // Add event listener to option
-    optionElement.addEventListener('click', () => {
-      // Remove selected class from all options
-      options.forEach(option => option.classList.remove('selected'));
-
-      // Add selected class to clicked option
-      optionElement.classList.add('selected');
-
-      // Update progress
-      progress[index] = optionIndex;
-      sessionStorage.setItem('progress', JSON.stringify(progress));
-    });
-  });
+// Add event listeners to radio buttons
+questionsContainer.addEventListener('change', (event) => {
+  if (event.target.tagName === 'INPUT') {
+    const questionIndex = parseInt(event.target.name.replace('question', ''));
+    const optionIndex = parseInt(event.target.value);
+    savedProgress[questionIndex] = optionIndex;
+    sessionStorage.setItem('progress', JSON.stringify(savedProgress));
+  }
 });
 
 // Add event listener to submit button
 submitButton.addEventListener('click', () => {
-  // Calculate score
+  let score = 0;
   questionsData.forEach((question, index) => {
-    if (progress[index] === question.answer) {
+    if (savedProgress[index] === question.answer) {
       score++;
     }
   });
-
-  // Display score
   scoreDisplay.textContent = `Your score is ${score} out of ${questionsData.length}`;
-
-  // Store score in local storage
   localStorage.setItem('score', score);
 });
+
+// Display saved score
+const savedScore = localStorage.getItem('score');
+if (savedScore) {
+  scoreDisplay.textContent = `Your previous score is ${savedScore} out of ${questionsData.length}`;
+}
