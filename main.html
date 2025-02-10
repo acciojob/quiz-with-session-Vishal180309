@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz with Progress Tracking</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Quiz</h1>
-  <div id="questions"></div>
-  <button id="submit">Submit</button>
-  <p id="score"></p>
-
-  <script src="script.js"></script>
+    <div id="quiz-container">
+        <h1>Quiz</h1>
+        <div id="questions">
+            <!-- Questions will be dynamically inserted here -->
+        </div>
+        <button id="submit">Submit</button>
+        <div id="score"></div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
