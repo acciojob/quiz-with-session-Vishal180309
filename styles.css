@@ -1,26 +1,33 @@
 body {
     font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
 }
 
 #questions {
-    margin-bottom: 20px;
+    text-align: left;
+    display: inline-block;
 }
 
-#submit {
-    margin-bottom: 20px;
-    padding: 10px;
+.question {
+    margin-bottom: 15px;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
     border: none;
-    border-radius: 5px;
-    background-color: #4CAF50;
-    color: #fff;
     cursor: pointer;
 }
 
-#submit:hover {
-    background-color: #3e8e41;
+button:hover {
+    background-color: #0056b3;
 }
 
 #score {
-    font-size: 24px;
+    margin-top: 20px;
+    font-size: 18px;
     font-weight: bold;
 }
